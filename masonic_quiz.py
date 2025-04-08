@@ -6,46 +6,43 @@ from datetime import datetime
 # ---- QUESTIONS ---- #
 question_bank = {
     "Entered Apprentice": [
-        ("What are the three great lights?", "a"),
-        ("As an Entered Apprentice, from whence you came?", "d"),
-        ("What came you here to do?", "c"),
-        ("Then I presume you are a Mason?", "a"),
-        ("What makes you a Mason?", "b"),
-        ("How do you know yourself to be a mason?", "b"),
-        ("How shall I know you to be a mason?", "d"),
-        ("What are signs?", "c"),
-        ("What is a token?", "c"),
-        ("What do you conceal?", "c"),
+        ("What are the three great lights?",
+         ["The Holy Bible, Square, Compass", "The trestle board, burning tapers", "The square, plumb, level", "The sun, moon, Worshipful Master"], "a"),
+        ("As an Entered Apprentice, from whence you came?",
+         ["Egypt", "Lodge of H.B. Turner", "Lodge of Due Guard", "Lodge of the Holy Saints John"], "d"),
+        ("What came you here to do?",
+         ["To seek light", "To improve my passions", "To subdue my passions and improve myself in Masonry", "To learn secrets"], "c"),
+        ("Then I presume you are a Mason?",
+         ["I am so taken and acknowledged", "I am", "I received the light", "I'm cautious"], "a"),
+        ("What makes you a Mason?",
+         ["The Bible", "My Obligation", "My Word", "God's Word"], "b"),
+        ("How do you know yourself to be a mason?",
+         ["I know my penalty and signs", "Tried and never denied", "I know my obligation", "I have grip, token, and sign"], "b"),
+        ("How shall I know you to be a mason?",
+         ["Tried and never denied", "Recognized by brothers", "Subduing passions", "Signs, token, word, and entrance"], "d"),
+        ("What are signs?",
+         ["Bible, Square, Compass", "Grip called due guard", "Right angles and perpendiculars", "Three burning tapers"], "c"),
+        ("What is a token?",
+         ["Password from St. John", "Square, level, plumb", "Grip to identify in dark/light", "Your apron"], "c"),
+        ("What do you conceal?",
+         ["My signs and tokens", "My obligation", "All secrets except rightful", "Bible, square, compass"], "c"),
     ],
     "Fellow Craft": [
-        ("What is the wage of a Fellow Craft?", "b"),
-        ("Where is the winding staircase?", "a"),
-        ("How many steps lead to the Middle Chamber?", "c"),
+        ("What is the wage of a Fellow Craft?",
+         ["Corn, wine, oil", "Knowledge and wisdom", "Five orders of architecture", "Brotherly love, relief, truth"], "a"),
+        ("Where is the winding staircase?",
+         ["Second degree lodge", "East side of the temple", "Between pillars", "Behind the altar"], "a"),
+        ("How many steps lead to the Middle Chamber?",
+         ["3", "7", "15", "33"], "c"),
     ],
     "Master Mason": [
-        ("Who was Hiram Abiff?", "a"),
-        ("What are the three Ruffians’ names?", "d"),
-        ("What does the sprig of acacia symbolize?", "c"),
+        ("Who was Hiram Abiff?",
+         ["Architect of King Solomon’s Temple", "First Grand Master", "Builder of the Ark", "Keeper of the Temple Scrolls"], "a"),
+        ("What are the three Ruffians’ names?",
+         ["Jubela, Jubelo, Jubelum", "Abiram, Aholiab, Jehoash", "Tyrus, Sidon, Judah", "Jubela, Jubelum, Jubelo"], "d"),
+        ("What does the sprig of acacia symbolize?",
+         ["Immortality", "Brotherhood", "New beginnings", "Secrecy"], "c"),
     ]
-}
-
-options_bank = {
-    0: ["The Holy Bible, Square, Compass", "The trestle board, burning tapers", "The square, plumb, level", "The sun, moon, Worshipful Master"],
-    1: ["Egypt", "Lodge of H.B. Turner", "Lodge of Due Guard", "Lodge of the Holy Saints John"],
-    2: ["To seek light", "To improve my passions", "To subdue my passions and improve myself in Masonry", "To learn secrets"],
-    3: ["I am so taken and acknowledged", "I am", "I received the light", "I'm cautious"],
-    4: ["The Bible", "My Obligation", "My Word", "God's Word"],
-    5: ["I know my penalty and signs", "Tried and never denied", "I know my obligation", "I have grip, token, and sign"],
-    6: ["Tried and never denied", "Recognized by brothers", "Subduing passions", "Signs, token, word, and entrance"],
-    7: ["Bible, Square, Compass", "Grip called due guard", "Right angles and perpendiculars", "Three burning tapers"],
-    8: ["Password from St. John", "Square, level, plumb", "Grip to identify in dark/light", "Your apron"],
-    9: ["My signs and tokens", "My obligation", "All secrets except rightful", "Bible, square, compass"],
-    10: ["Corn, wine, oil", "Knowledge and wisdom", "Five orders of architecture", "Brotherly love, relief, truth"],
-    11: ["Second degree lodge", "East side of the temple", "Between pillars", "Behind the altar"],
-    12: ["3", "7", "15", "33"],
-    13: ["Architect of King Solomon’s Temple", "First Grand Master", "Builder of the Ark", "Keeper of the Temple Scrolls"],
-    14: ["Jubela, Jubelo, Jubelum", "Abiram, Aholiab, Jehoash", "Tyrus, Sidon, Judah", "Jubela, Jubelum, Jubelo"],
-    15: ["Immortality", "Brotherhood", "New beginnings", "Secrecy"],
 }
 
 # ---- INITIAL STATE ---- #
@@ -70,17 +67,16 @@ if not st.session_state.quiz_started:
     if st.button("Start Quiz") and st.session_state.name:
         st.session_state.quiz_started = True
         st.session_state.start_time = time.time()
-        st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Square_and_Compasses.svg/1200px-Square_and_Compasses.svg.png", width=120)
+        st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Freemasonry_Emblem.svg/320px-Freemasonry_Emblem.svg.png", width=100)
         st.success(f"Welcome Brother {st.session_state.name}, let's begin the {st.session_state.degree} quiz.")
 
 # ---- QUIZ LOOP ---- #
 elif not st.session_state.completed:
     q_list = question_bank[st.session_state.degree]
     q_idx = st.session_state.current_q
-    q_text, correct_letter = q_list[q_idx]
-    opts = options_bank[q_idx]
+    q_text, opts, correct_letter = q_list[q_idx]
 
-    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Square_and_Compasses.svg/1200px-Square_and_Compasses.svg.png", width=100)
+    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Freemasonry_Emblem.svg/320px-Freemasonry_Emblem.svg.png", width=80)
     st.progress(q_idx / len(q_list))
     st.subheader(f"Question {q_idx + 1} of {len(q_list)}")
     st.write(q_text)
@@ -117,7 +113,6 @@ elif not st.session_state.completed:
             st.session_state.completed = True
 
         st.rerun()
-
 
 # ---- QUIZ COMPLETE ---- #
 if st.session_state.completed:
@@ -158,4 +153,3 @@ if st.session_state.completed:
         for key in list(st.session_state.keys()):
             del st.session_state[key]
         st.rerun()
-
